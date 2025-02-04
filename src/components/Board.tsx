@@ -5,6 +5,7 @@ import {
   INITIAL_RESULT_CONTEXT,
   RESULT_CONTEXT,
 } from "../contexts/ResultContext";
+import { divide, multiply, substract, sum } from "../utils/mathUtils";
 
 const MAX_CHARACTER: number = 10;
 
@@ -13,39 +14,112 @@ const Board = () => {
     useContext<ResultType>(RESULT_CONTEXT);
 
   /**
-   *
+   * Add value
    * @param value string
    */
   function addValue(value: string): void {
-    const stringifyResultValue: string = resultContext.value.toString();
-    let finalValue: string = stringifyResultValue + value;
+    let targetValue;
+
+    /** Define the target value */
+    if (resultContext.operator === undefined) {
+      targetValue = resultContext.currentValue.toString();
+    } else {
+      targetValue = resultContext.newValue.toString();
+    }
+
+    let finalValue: string = targetValue + value;
 
     // Remove first "0" if needed
-    if (stringifyResultValue === "0") {
+    if (targetValue === "0") {
       finalValue = value;
     }
 
     // Set a limit
-    if (stringifyResultValue.length >= MAX_CHARACTER) {
+    if (targetValue.length >= MAX_CHARACTER) {
       return;
     }
 
-    setResultContext({ ...resultContext, value: finalValue });
+    setResultContext({
+      ...resultContext,
+      [resultContext.operator === undefined ? "currentValue" : "newValue"]:
+        parseFloat(finalValue),
+    });
   }
 
   /**
    * Remove the last digit of the result value
    */
   function removeValue(): void {
-    const stringifyResultValue: string = resultContext.value.toString();
+    let targetValue;
+
+    /** Define the target value */
+    if (resultContext.operator === undefined) {
+      targetValue = resultContext.currentValue.toString();
+    } else {
+      targetValue = resultContext.newValue.toString();
+    }
 
     // Remove first "0" if needed
-    if (stringifyResultValue.length === 1) {
-      setResultContext({ ...resultContext, value: "0" });
+    if (targetValue.length === 1) {
+      setResultContext({
+        ...resultContext,
+        [resultContext.operator === undefined ? "currentValue" : "newValue"]: 0,
+      });
     } else {
-      const newValue = stringifyResultValue.slice(0, -1);
-      setResultContext({ ...resultContext, value: newValue });
+      const newValue = targetValue.slice(0, -1);
+      setResultContext({
+        ...resultContext,
+        [resultContext.operator === undefined ? "currentValue" : "newValue"]:
+          parseFloat(newValue),
+      });
     }
+  }
+
+  function setResult(): void {
+    if (resultContext.operator === undefined || resultContext.newValue === 0) {
+      return;
+    } else {
+      let newTotal;
+      switch (resultContext.operator) {
+        case "+":
+          newTotal = sum(resultContext.currentValue, resultContext.newValue);
+          break;
+        case "-":
+          newTotal = substract(
+            resultContext.currentValue,
+            resultContext.newValue
+          );
+          break;
+        case "*":
+          newTotal = multiply(
+            resultContext.currentValue,
+            resultContext.newValue
+          );
+          break;
+        case "/":
+          newTotal = divide(resultContext.currentValue, resultContext.newValue);
+          break;
+        default:
+          return;
+      }
+
+      // After calculating, the total is saved, and we reset newValue for the next input.
+      setResultContext({
+        ...resultContext,
+        total: newTotal,
+        currentValue: newTotal, // Allow next number to continue from the result
+        newValue: 0, // Reset the newValue for next input
+        operator: undefined, // Reset operator to prepare for next operation
+      });
+    }
+  }
+
+  /**
+   * Set the operator
+   * @param operator string
+   */
+  function setOperator(operator: string): void {
+    setResultContext({ ...resultContext, operator: operator });
   }
 
   /**
@@ -108,7 +182,9 @@ const Board = () => {
       />
       <Button
         text={"+"}
-        onClick={() => {}}
+        onClick={() => {
+          setOperator("+");
+        }}
         className={"text-dark-desatured-blue-third bg-light-grayish-orange"}
       />
       <Button
@@ -134,7 +210,9 @@ const Board = () => {
       />
       <Button
         text={"-"}
-        onClick={() => {}}
+        onClick={() => {
+          setOperator("-");
+        }}
         className={"text-dark-desatured-blue-third bg-light-grayish-orange"}
       />
       <Button
@@ -153,12 +231,16 @@ const Board = () => {
       />
       <Button
         text={"/"}
-        onClick={() => {}}
+        onClick={() => {
+          setOperator("/");
+        }}
         className={"text-dark-desatured-blue-third bg-light-grayish-orange"}
       />
       <Button
         text={"x"}
-        onClick={() => {}}
+        onClick={() => {
+          setOperator("*");
+        }}
         className={"text-dark-desatured-blue-third bg-light-grayish-orange"}
       />
       <Button
@@ -170,7 +252,9 @@ const Board = () => {
       />
       <Button
         text={"="}
-        onClick={() => {}}
+        onClick={() => {
+          setResult();
+        }}
         className={"col-span-2 text-white bg-red "}
       />
     </div>

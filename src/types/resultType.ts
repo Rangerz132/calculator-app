@@ -1,5 +1,6 @@
 export type ResultType = {
-  value: number;
+  newValue: number;
+  currentValue: number;
   operator: "+" | "-" | "*" | "/" | undefined;
   total: number;
 };
