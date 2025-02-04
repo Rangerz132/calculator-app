@@ -1,12 +1,12 @@
 import Header from "../components/Header";
 import ResultViewer from "../components/ResultViewer";
 import Board from "../components/Board";
+import { ResultType } from "../types/resultType";
+import { useState } from "react";
 import {
   INITIAL_RESULT_CONTEXT,
   RESULT_CONTEXT,
 } from "../contexts/ResultContext";
-import { ResultType } from "../types/resultType";
-import { useState } from "react";
 
 const Home = () => {
   const [resultContext, setResultContext] = useState<ResultType>(

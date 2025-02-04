@@ -1,12 +1,8 @@
-import { useState } from "react";
-
 const Button = (props: {
   text: string;
   onClick: () => void;
   className: string;
 }) => {
-  const [isClicked, setIsClicked] = useState<boolean>(false);
-
   const handleClick = (): void => {
     props.onClick();
   };
