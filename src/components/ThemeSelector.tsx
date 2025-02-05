@@ -48,11 +48,13 @@ const ThemeSelector = () => {
         {/** Slider */}
         <div>
           {/** Background */}
-          <div className="w-full h-[1.5rem] bg-dark-theme-very-dark-desatured-blue-second rounded-full p-1 light:bg-light-theme-grayish-red vibrant:bg-vibrant-theme-very-dark-violet-second">
+          <div
+            onClick={() => changeTheme()}
+            className="w-full h-[1.5rem] bg-dark-theme-very-dark-desatured-blue-second rounded-full p-1 cursor-pointer light:bg-light-theme-grayish-red vibrant:bg-vibrant-theme-very-dark-violet-second"
+          >
             {/** Knob */}
             <div
-              onClick={() => changeTheme()}
-              className={`bg-dark-theme-red w-[1rem] h-[1rem] rounded-full cursor-pointer   light:bg-light-theme-orange vibrant:bg-vibrant-theme-pure-cyan transition-all ${moveKnob()}`}
+              className={`bg-dark-theme-red w-[1rem] h-[1rem] rounded-full    light:bg-light-theme-orange vibrant:bg-vibrant-theme-pure-cyan transition-all ${moveKnob()}`}
             ></div>
           </div>
         </div>
