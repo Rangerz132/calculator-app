@@ -30,9 +30,3 @@ npm run dev
 - Clean and modern design.
 
 - Modular and reusable components.
-
-## Media
-
-![](src/assets/design/mobile-design-theme-1.jpg)
-![](src/assets/design/mobile-design-theme-2.jpg)
-![](src/assets/design/mobile-design-theme-3.jpg)
