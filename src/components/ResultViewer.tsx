@@ -21,7 +21,7 @@ const ResultViewer = () => {
   }
 
   return (
-    <div className="w-full p-6 bg-very-dark-desatured-blue-third text-right text-white text-4xl rounded-xl">
+    <div className="w-full p-6 bg-dark-theme-very-dark-desatured-blue-third text-right text-white text-4xl rounded-xl light:bg-white light:text-dark-theme-grayish-blue vibrant:text-vibrant-theme-light-yellow vibrant:bg-vibrant-theme-very-dark-violet-second">
       {showResultValue()}
     </div>
   );
